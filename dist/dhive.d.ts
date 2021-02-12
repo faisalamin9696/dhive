@@ -151,7 +151,7 @@ declare module 'dhive/chain/asset' {
 }
 declare module 'dhive/chain/account' {
 	/**
-	 * @file Hive account type definitions.
+	 * @file Steem account type definitions.
 	 * @author Johan Nordberg <code@johan-nordberg.com>
 	 * @license
 	 * Copyright (c) 2017 Johan Nordberg. All Rights Reserved.
@@ -233,19 +233,19 @@ declare module 'dhive/chain/account' {
 	    };
 	    balance: string | Asset;
 	    savings_balance: string | Asset;
-	    hbd_balance: string | Asset;
-	    hbd_seconds: string;
-	    hbd_seconds_last_update: string;
-	    hbd_last_interest_payment: string;
-	    savings_hbd_balance: string | Asset;
-	    savings_hbd_seconds: string;
-	    savings_hbd_seconds_last_update: string;
-	    savings_hbd_last_interest_payment: string;
+	    sbd_balance: string | Asset;
+	    sbd_seconds: string;
+	    sbd_seconds_last_update: string;
+	    sbd_last_interest_payment: string;
+	    savings_sbd_balance: string | Asset;
+	    savings_sbd_seconds: string;
+	    savings_sbd_seconds_last_update: string;
+	    savings_sbd_last_interest_payment: string;
 	    savings_withdraw_requests: number;
-	    reward_hbd_balance: string | Asset;
+	    reward_sbd_balance: string | Asset;
 	    reward_steem_balance: string | Asset;
 	    reward_vesting_balance: string | Asset;
-	    reward_vesting_hive: string | Asset;
+	    reward_vesting_steem: string | Asset;
 	    curation_rewards: number | string;
 	    posting_rewards: number | string;
 	    vesting_shares: string | Asset;
@@ -269,7 +269,7 @@ declare module 'dhive/chain/account' {
 	}
 	export interface ExtendedAccount extends Account {
 	    /**
-	     * Convert vesting_shares to vesting hive.
+	     * Convert vesting_shares to vesting steem.
 	     */
 	    vesting_balance: string | Asset;
 	    reputation: string | number;
@@ -372,9 +372,9 @@ declare module 'dhive/chain/misc' {
 	     */
 	    maximum_block_size: number;
 	    /**
-	     * The HBD interest percentage rate decided by witnesses, expressed 0 to 10000.
+	     * The SBD interest percentage rate decided by witnesses, expressed 0 to 10000.
 	     */
-	    hbd_interest_rate: number;
+	    sbd_interest_rate: number;
 	}
 	export interface VestingDelegation {
 	    /**
@@ -432,11 +432,11 @@ declare module 'dhive/chain/misc' {
 	     * Total asset held in confidential balances.
 	     */
 	    confidential_supply: Asset | string;
-	    current_hbd_supply: Asset | string;
+	    current_sbd_supply: Asset | string;
 	    /**
 	     * Total asset held in confidential balances.
 	     */
-	    confidential_hbd_supply: Asset | string;
+	    confidential_sbd_supply: Asset | string;
 	    total_vesting_fund_hive: Asset | string;
 	    total_vesting_shares: Asset | string;
 	    total_reward_fund_hive: Asset | string;
@@ -447,10 +447,10 @@ declare module 'dhive/chain/misc' {
 	    pending_rewarded_vesting_shares: Asset | string;
 	    pending_rewarded_vesting_hive: Asset | string;
 	    /**
-	     * This property defines the interest rate that HBD deposits receive.
+	     * This property defines the interest rate that SBD deposits receive.
 	     */
-	    hbd_interest_rate: number;
-	    hbd_print_rate: number;
+	    sbd_interest_rate: number;
+	    sbd_print_rate: number;
 	    /**
 	     *  Average block size is updated every block to be:
 	     *
@@ -517,7 +517,7 @@ declare module 'dhive/chain/misc' {
 }
 declare module 'dhive/chain/serializer' {
 	/**
-	 * @file Hive protocol serialization.
+	 * @file Steem protocol serialization.
 	 * @author Johan Nordberg <code@johan-nordberg.com>
 	 * @license
 	 * Copyright (c) 2017 Johan Nordberg. All Rights Reserved.
@@ -862,7 +862,7 @@ declare module 'dhive/chain/block' {
 }
 declare module 'dhive/chain/comment' {
 	/**
-	 * @file Hive type definitions related to comments and posting.
+	 * @file Steem type definitions related to comments and posting.
 	 * @author Johan Nordberg <code@johan-nordberg.com>
 	 * @license
 	 * Copyright (c) 2017 Johan Nordberg. All Rights Reserved.
@@ -926,7 +926,7 @@ declare module 'dhive/chain/comment' {
 	    net_votes: number;
 	    root_comment: number;
 	    max_accepted_payout: string;
-	    percent_hbd: number;
+	    percent_steem_dollars: number;
 	    allow_replies: boolean;
 	    allow_votes: boolean;
 	    allow_curation_rewards: boolean;
@@ -957,7 +957,7 @@ declare module 'dhive/chain/comment' {
 }
 declare module 'dhive/chain/operation' {
 	/**
-	 * @file Hive operation type definitions.
+	 * @file Steem operation type definitions.
 	 * @author Johan Nordberg <code@johan-nordberg.com>
 	 * @license
 	 * Copyright (c) 2017 Johan Nordberg. All Rights Reserved.
@@ -1127,7 +1127,7 @@ declare module 'dhive/chain/operation' {
 	    1: {
 	        account: string;
 	        reward_steem: string | Asset;
-	        reward_hbd: string | Asset;
+	        reward_sbd: string | Asset;
 	        reward_vests: string | Asset;
 	    };
 	}
@@ -1161,8 +1161,8 @@ declare module 'dhive/chain/operation' {
 	        permlink: string;
 	        /** HBD value of the maximum payout this post will receive. */
 	        max_accepted_payout: Asset | string;
-	        /** The percent of Hive Dollars to key, unkept amounts will be received as Hive Power. */
-	        percent_hbd: number;
+	        /** The percent of STEEM Dollars to key, unkept amounts will be received as Steem Power. */
+	        percent_steem_dollars: number;
 	        /** Whether to allow post to receive votes. */
 	        allow_votes: boolean;
 	        /** Whether to allow post to recieve curation rewards. */
@@ -1327,13 +1327,13 @@ declare module 'dhive/chain/operation' {
 	        receiver: string;
 	        escrow_id: number;
 	        /**
-	         * The amount of hbd to release.
+	         * The amount of sbd to release.
 	         */
-	        hbd_amount: Asset | string;
+	        sbd_amount: Asset | string;
 	        /**
-	         * The amount of hive to release.
+	         * The amount of steem to release.
 	         */
-	        hive_amount: Asset | string;
+	        steem_amount: Asset | string;
 	    };
 	}
 	/**
@@ -1361,8 +1361,8 @@ declare module 'dhive/chain/operation' {
 	        to: string;
 	        agent: string;
 	        escrow_id: number;
-	        hbd_amount: Asset | string;
-	        hive_amount: Asset | string;
+	        sbd_amount: Asset | string;
+	        steem_amount: Asset | string;
 	        fee: Asset | string;
 	        ratification_deadline: string;
 	        escrow_expiration: string;
@@ -1506,9 +1506,9 @@ declare module 'dhive/chain/operation' {
 	 *
 	 * Users not in the ACTIVE witness set should not have to worry about their
 	 * key getting compromised and being used to produced multiple blocks so
-	 * the attacker can report it and steel their vesting hive.
+	 * the attacker can report it and steel their vesting steem.
 	 *
-	 * The result of the operation is to transfer the full VESTING HIVE balance
+	 * The result of the operation is to transfer the full VESTING STEEM balance
 	 * of the block producer to the reporter.
 	 */
 	export interface ReportOverProductionOperation extends Operation {
@@ -1597,7 +1597,7 @@ declare module 'dhive/chain/operation' {
 	 * request for the funds to be transferred directly to another account's
 	 * balance rather than the withdrawing account. In addition, those funds
 	 * can be immediately vested again, circumventing the conversion from
-	 * vests to hive and back, guaranteeing they maintain their value.
+	 * vests to steem and back, guaranteeing they maintain their value.
 	 */
 	export interface SetWithdrawVestingRouteOperation extends Operation {
 	    0: "set_withdraw_vesting_route";
@@ -1623,7 +1623,7 @@ declare module 'dhive/chain/operation' {
 	         */
 	        to: string;
 	        /**
-	         * Amount of HIVE or HBD to send.
+	         * Amount of STEEM or SBD to send.
 	         */
 	        amount: string | Asset;
 	        /**
@@ -1653,7 +1653,7 @@ declare module 'dhive/chain/operation' {
 	    };
 	}
 	/**
-	 * This operation converts HIVE into VFS (Vesting Fund Shares) at
+	 * This operation converts STEEM into VFS (Vesting Fund Shares) at
 	 * the current exchange rate. With this operation it is possible to
 	 * give another account vesting shares so that faucets can
 	 * pre-fund new accounts with vesting shares.
@@ -1665,7 +1665,7 @@ declare module 'dhive/chain/operation' {
 	        from: string;
 	        to: string;
 	        /**
-	         * Amount to power up, must be HIVE
+	         * Amount to power up, must be STEEM
 	         */
 	        amount: string | Asset;
 	    };
@@ -1823,7 +1823,7 @@ declare module 'dhive/utils' {
 	 * in the design, construction, operation or maintenance of any military facility.
 	 */
 	/// <reference types="node" />
-	import { EventEmitter } from 'events';
+	import { EventEmitter } from "events";
 	/**
 	 * Return a promise that will resove when a specific event is emitted.
 	 */
@@ -1857,8 +1857,8 @@ declare module 'dhive/utils' {
 	    key: PublicKey | string;
 	    maximum_block_size?: number;
 	    new_signing_key?: PublicKey | string | null;
-	    hbd_exchange_rate?: PriceType;
-	    hbd_interest_rate?: number;
+	    sbd_exchange_rate?: PriceType;
+	    sbd_interest_rate?: number;
 	    url?: string;
 	}
 	export function buildWitnessUpdateOp(owner: string, props: WitnessProps): WitnessSetPropertiesOperation;

@@ -1,5 +1,5 @@
 /**
- * @file Hive operation type definitions.
+ * @file Steem operation type definitions.
  * @author Johan Nordberg <code@johan-nordberg.com>
  * @license
  * Copyright (c) 2017 Johan Nordberg. All Rights Reserved.
@@ -240,7 +240,7 @@ export interface ClaimRewardBalanceOperation extends Operation {
   1: {
     account: string; // account_name_type
     reward_steem: string | Asset;
-    reward_hbd: string | Asset;
+    reward_sbd: string | Asset;
     reward_vests: string | Asset;
   };
 }
@@ -277,8 +277,8 @@ export interface CommentOptionsOperation extends Operation {
     permlink: string;
     /** HBD value of the maximum payout this post will receive. */
     max_accepted_payout: Asset | string;
-    /** The percent of Hive Dollars to key, unkept amounts will be received as Hive Power. */
-    percent_hbd: number; // uint16_t
+    /** The percent of STEEM Dollars to key, unkept amounts will be received as Steem Power. */
+    percent_steem_dollars: number; // uint16_t
     /** Whether to allow post to receive votes. */
     allow_votes: boolean;
     /** Whether to allow post to recieve curation rewards. */
@@ -452,13 +452,13 @@ export interface EscrowReleaseOperation extends Operation {
     receiver: string; // account_name_type
     escrow_id: number; // uint32_t
     /**
-     * The amount of hbd to release.
+     * The amount of sbd to release.
      */
-    hbd_amount: Asset | string;
+    sbd_amount: Asset | string;
     /**
-     * The amount of hive to release.
+     * The amount of steem to release.
      */
-    hive_amount: Asset | string;
+    steem_amount: Asset | string;
   };
 }
 
@@ -487,8 +487,8 @@ export interface EscrowTransferOperation extends Operation {
     to: string; // account_name_type
     agent: string; // account_name_type
     escrow_id: number; // uint32_t
-    hbd_amount: Asset | string;
-    hive_amount: Asset | string;
+    sbd_amount: Asset | string;
+    steem_amount: Asset | string;
     fee: Asset | string;
     ratification_deadline: string; // time_point_sec
     escrow_expiration: string; // time_point_sec
@@ -640,9 +640,9 @@ export interface RecoverAccountOperation extends Operation {
  *
  * Users not in the ACTIVE witness set should not have to worry about their
  * key getting compromised and being used to produced multiple blocks so
- * the attacker can report it and steel their vesting hive.
+ * the attacker can report it and steel their vesting steem.
  *
- * The result of the operation is to transfer the full VESTING HIVE balance
+ * The result of the operation is to transfer the full VESTING STEEM balance
  * of the block producer to the reporter.
  */
 export interface ReportOverProductionOperation extends Operation {
@@ -735,7 +735,7 @@ export interface SetResetAccountOperation extends Operation {
  * request for the funds to be transferred directly to another account's
  * balance rather than the withdrawing account. In addition, those funds
  * can be immediately vested again, circumventing the conversion from
- * vests to hive and back, guaranteeing they maintain their value.
+ * vests to steem and back, guaranteeing they maintain their value.
  */
 export interface SetWithdrawVestingRouteOperation extends Operation {
   0: "set_withdraw_vesting_route"; // 20
@@ -762,7 +762,7 @@ export interface TransferOperation extends Operation {
      */
     to: string; // account_name_type
     /**
-     * Amount of HIVE or HBD to send.
+     * Amount of STEEM or SBD to send.
      */
     amount: string | Asset;
     /**
@@ -795,7 +795,7 @@ export interface TransferToSavingsOperation extends Operation {
 }
 
 /**
- * This operation converts HIVE into VFS (Vesting Fund Shares) at
+ * This operation converts STEEM into VFS (Vesting Fund Shares) at
  * the current exchange rate. With this operation it is possible to
  * give another account vesting shares so that faucets can
  * pre-fund new accounts with vesting shares.
@@ -807,7 +807,7 @@ export interface TransferToVestingOperation extends Operation {
     from: string; // account_name_type
     to: string; // account_name_type
     /**
-     * Amount to power up, must be HIVE
+     * Amount to power up, must be STEEM
      */
     amount: string | Asset;
   };
