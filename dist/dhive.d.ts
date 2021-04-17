@@ -46,7 +46,7 @@ declare module 'dhive/chain/asset' {
 	/**
 	 * Asset symbol string.
 	 */
-	export type AssetSymbol = 'HIVE' | 'VESTS' | 'HBD' | 'TESTS' | 'TBD' | 'STEEM' | 'SBD';
+	export type AssetSymbol = "VESTS" | "TESTS" | "TBD" | "STEEM" | "SBD";
 	/**
 	 * Class representing a hive asset, e.g. `1.000 HIVE` or `12.112233 VESTS`.
 	 */
@@ -299,7 +299,7 @@ declare module 'dhive/chain/account' {
 declare module 'dhive/chain/misc' {
 	/// <reference types="node" />
 	/**
-	 * @file Misc hive type definitions.
+	 * @file Misc Steem type definitions.
 	 * @author Johan Nordberg <code@johan-nordberg.com>
 	 * @license
 	 * Copyright (c) 2017 Johan Nordberg. All Rights Reserved.
@@ -595,7 +595,7 @@ declare module 'dhive/chain/serializer' {
 }
 declare module 'dhive/chain/transaction' {
 	/**
-	 * @file Hive transaction type definitions.
+	 * @file Steem transaction type definitions.
 	 * @author Johan Nordberg <code@johan-nordberg.com>
 	 * @license
 	 * Copyright (c) 2017 Johan Nordberg. All Rights Reserved.
@@ -1946,7 +1946,7 @@ declare module 'dhive/utils' {
 }
 declare module 'dhive/helpers/blockchain' {
 	/**
-	 * @file Hive blockchain helpers.
+	 * @file Steem blockchain helpers.
 	 * @author Johan Nordberg <code@johan-nordberg.com>
 	 * @license
 	 * Copyright (c) 2017 Johan Nordberg. All Rights Reserved.
@@ -2264,7 +2264,7 @@ declare module 'dhive/helpers/database' {
 	/**
 	 * Possible categories for `get_discussions_by_*`.
 	 */
-	export type DiscussionQueryCategory = 'active' | 'blog' | 'cashout' | 'children' | 'comments' | 'feed' | 'hot' | 'promoted' | 'trending' | 'votes' | 'created';
+	export type DiscussionQueryCategory = "active" | "blog" | "cashout" | "children" | "comments" | "feed" | "hot" | "promoted" | "trending" | "votes" | "created";
 	export interface DisqussionQuery {
 	    /**
 	     * Name of author or tag to fetch.

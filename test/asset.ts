@@ -57,7 +57,7 @@ describe("asset", function () {
     assert.throws(() => Asset.fromString("I LIKE TURT 0.42"));
     assert.throws(() => Asset.fromString("Infinity STEEM"));
     assert.throws(() => Asset.fromString("..0 STEEM"));
-    assert.throws(() => Asset.from("..0 HIVE"));
+    assert.throws(() => Asset.from("..0 STEEM"));
     assert.throws(() => Asset.from(NaN));
     assert.throws(() => Asset.from(false as any));
     assert.throws(() => Asset.from(Infinity));
@@ -95,8 +95,11 @@ describe("asset", function () {
   });
 
   it("should convert price", function () {
-    const price1 = new Price(Asset.from("0.500 HIVE"), Asset.from("1.000 SBD"));
-    const v1 = price1.convert(Asset.from("1.000 HIVE"));
+    const price1 = new Price(
+      Asset.from("0.500 STEEM"),
+      Asset.from("1.000 SBD")
+    );
+    const v1 = price1.convert(Asset.from("1.000 STEEM"));
     assert.equal(v1.amount, 2);
     assert.equal(v1.symbol, "SBD");
     const v2 = price1.convert(Asset.from("1.000 SBD"));
