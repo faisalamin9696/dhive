@@ -42,7 +42,9 @@ import { Operation } from "./operation";
 export type Serializer = (buffer: ByteBuffer, data: any) => void;
 
 const VoidSerializer = (buffer: ByteBuffer) => {
-  throw new Error("Void can not be serialized");
+  // throw new Error("Void can not be serialized");
+  console.error("Void can not be serialized");
+  process.exit(1);
 };
 
 const StringSerializer = (buffer: ByteBuffer, data: string) => {
@@ -136,9 +138,13 @@ const BinarySerializer = (size?: number) => (
   const len = data.buffer.length;
   if (size) {
     if (len !== size) {
-      throw new Error(
+      // throw new Error(
+      //   `Unable to serialize binary. Expected ${size} bytes, got ${len}`
+      // );
+      console.error(
         `Unable to serialize binary. Expected ${size} bytes, got ${len}`
       );
+      process.exit(1);
     }
   } else {
     buffer.writeVarint32(len);
@@ -178,7 +184,9 @@ const ObjectSerializer = (keySerializers: [string, Serializer][]) => (
       serializer(buffer, data[key]);
     } catch (error) {
       error.message = `${key}: ${error.message}`;
-      throw error;
+      // throw error;
+      console.error("ObjectSerializer Error:", error.message);
+      process.exit(1);
     }
   }
 };

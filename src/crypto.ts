@@ -361,10 +361,13 @@ function transactionDigest(
   try {
     Types.Transaction(buffer, transaction);
   } catch (cause) {
-    throw new VError(
-      { cause, name: "SerializationError" },
-      "Unable to serialize transaction"
-    );
+    console.error("SerializationError: Unable to serialize transaction");
+    process.exit(1);
+
+    // throw new VError(
+    //   { cause, name: "SerializationError" },
+    //   "Unable to serialize transaction"
+    // );
   }
   buffer.flip();
 
