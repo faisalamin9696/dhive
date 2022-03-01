@@ -64,7 +64,7 @@ export interface BlockchainStreamOptions {
 }
 
 export class Blockchain {
-  constructor(readonly client: Client) {}
+  constructor(readonly client: Client) { }
 
   /**
    * Get latest block number.
@@ -110,11 +110,11 @@ export class Blockchain {
     }
     let current = await this.getCurrentBlockNum(options.mode);
     if (options.from !== undefined && options.from > current) {
-      // throw new Error(
-      //   `From can't be larger than current block num (${current})`
-      // )
+      throw new Error(
+        `From can't be larger than current block num (${current})`
+      )
       console.error(`From can't be larger than current block num (${current})`);
-      process.exit(1);
+      // process.exit(1);
     }
     let seen = options.from !== undefined ? options.from : current;
     while (true) {

@@ -116,9 +116,9 @@ export async function retryingFetch(
       }
       const response = await fetch(currentAddress, opts);
       if (!response.ok) {
-        //        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         console.error(`HTTP ${response.status}: ${response.statusText}`);
-        process.exit(1);
+        // process.exit(1);
       }
       return { response: await response.json(), currentAddress };
     } catch (error) {
@@ -154,25 +154,23 @@ export async function retryingFetch(
                 consoleOnFailover
               );
             } else {
-              error.message = `[${
-                error.code
-              }] tried ${failoverThreshold} times with ${allAddresses.join(
-                ","
-              )}`;
-              //              throw error;
+              error.message = `[${error.code
+                }] tried ${failoverThreshold} times with ${allAddresses.join(
+                  ","
+                )}`;
+              throw error;
               console.error("Utils Error:", error);
-              process.exit(1);
+              // process.exit(1);
             }
           } else {
             // tslint:disable-next-line: no-console
             console.error(
-              `Didn't failover for error ${error.code ? "code" : "message"}: [${
-                error.code || error.message
+              `Didn't failover for error ${error.code ? "code" : "message"}: [${error.code || error.message
               }]`
             );
-            // throw error;
+            throw error;
             console.error("Utils Error:", error);
-            process.exit(1);
+            // process.exit(1);
           }
         }
       }
@@ -261,9 +259,9 @@ export function buildWitnessUpdateOp(
         type = Types.Asset;
         break;
       default:
-        //        throw new Error(`Unknown witness prop: ${key}`);
+        throw new Error(`Unknown witness prop: ${key}`);
         console.error("Unknown witness prop:", key);
-        process.exit(1);
+      // process.exit(1);
     }
     data.props.push([key, serialize(type, props[key])]);
   }

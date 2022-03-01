@@ -85,7 +85,7 @@ export class HivemindAPI {
      * @param params
      */
     public call(method: string, params?: any) {
-        return this.client.call('bridge', method, params)
+        return this.client.call2('bridge', method, params)
     }
 
     /**

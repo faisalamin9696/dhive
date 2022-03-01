@@ -167,6 +167,6 @@ export declare class Client {
      * @param params  Array of parameters to pass to the method, optional.
      *
      */
-    call(api: string, method: string, params?: any): Promise<any>;
+    call2(api: string, method: string, params?: any): Promise<any>;
     updateOperations(rebrandedApi: any): void;
 }

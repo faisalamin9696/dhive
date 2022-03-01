@@ -104,7 +104,7 @@ export class BroadcastAPI {
    */
   public expireTime = 60 * 1000;
 
-  constructor(readonly client: Client) {}
+  constructor(readonly client: Client) { }
 
   /**
    * Broadcast a comment, also used to create a new top level post.
@@ -215,9 +215,9 @@ export class BroadcastAPI {
       posting = Authority.from(options.auths.posting);
       memo_key = PublicKey.from(options.auths.memoKey);
     } else {
-      // throw new Error('Must specify either password or auths')
+      throw new Error('Must specify either password or auths')
       console.error("Must specify either password or auths");
-      process.exit(1);
+      // process.exit(1);
     }
 
     let { fee, delegation } = options;
@@ -229,9 +229,9 @@ export class BroadcastAPI {
       const chainProps = await this.client.database.getChainProperties();
       const creationFee = Asset.from(chainProps.account_creation_fee);
       if (fee.amount !== creationFee.amount) {
-        // throw new Error("Fee must be exactly " + creationFee.toString());
+        throw new Error("Fee must be exactly " + creationFee.toString());
         console.error("Fee must be exactly", creationFee.toString());
-        process.exit(1);
+        // process.exit(1);
       }
     }
 
@@ -366,6 +366,6 @@ export class BroadcastAPI {
    * Convenience for calling `condenser_api`.
    */
   public call(method: string, params?: any[]) {
-    return this.client.call("condenser_api", method, params);
+    return this.client.call2("condenser_api", method, params);
   }
 }

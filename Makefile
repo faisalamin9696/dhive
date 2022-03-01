@@ -18,6 +18,8 @@ lib: $(SRC_FILES) node_modules
 	echo "$$VERSION_TEMPLATE" > lib/version.js
 	touch lib
 
+# --compress "dead_code,collapse_vars,reduce_vars,keep_infinity,drop_console,passes=2" 
+# to print console log: --compress "dead_code,collapse_vars,reduce_vars,keep_infinity,passes=2" 
 dist/%.js: lib
 	browserify $(filter-out $<,$^) --debug --full-paths \
 		--standalone dhive --plugin tsify \
@@ -25,7 +27,7 @@ dist/%.js: lib
 		| derequire > $@
 	uglifyjs $@ \
 		--source-map "content=inline,url=$(notdir $@).map,filename=$@.map" \
-		--compress "dead_code,collapse_vars,reduce_vars,keep_infinity,drop_console,passes=2" \
+		--compress "dead_code,collapse_vars,reduce_vars,keep_infinity,passes=2" \
 		--output $@ || rm $@
 
 dist/dhive.js: src/index-browser.ts

@@ -286,7 +286,7 @@ export class Client {
    * @param params  Array of parameters to pass to the method, optional.
    *
    */
-  public async call(
+  public async call2(
     api: string,
     method: string,
     params: any = []
@@ -394,9 +394,9 @@ export class Client {
         }
       }
       // unhandledPromiseRejection RPCError: unable to acquire database lock
-      //      throw new VError({ info: data, name: "RPCError" }, message);
+      throw new VError({ info: data, name: "RPCError" }, message);
       console.error("RPCError:", message);
-      process.exit(1);
+      // process.exit(1);
     }
     assert.equal(response.id, request.id, "got invalid response id");
     return response.result;

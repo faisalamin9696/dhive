@@ -54,7 +54,7 @@ export class Asset {
   constructor(
     public readonly amount: number,
     public readonly symbol: AssetSymbol
-  ) {}
+  ) { }
 
   /**
    * Create a new Asset instance from a string, e.g. `42.000 HIVE`.
@@ -62,24 +62,24 @@ export class Asset {
   public static fromString(string: string, expectedSymbol?: AssetSymbol) {
     const [amountString, symbol] = string.split(" ");
     if (!["VESTS", "TESTS", "TBD", "SBD", "STEEM"].includes(symbol)) {
-      //      throw new Error(`Invalid asset symbol: ${symbol}`);
+      throw new Error(`Invalid asset symbol: ${symbol}`);
       console.error("Invalid asset symbol:", symbol);
-      process.exit(1);
+      // process.exit(1);
     }
     if (expectedSymbol && symbol !== expectedSymbol) {
-      // throw new Error(
-      //   `Invalid asset, expected symbol: ${expectedSymbol} got: ${symbol}`
-      // );
+      throw new Error(
+        `Invalid asset, expected symbol: ${expectedSymbol} got: ${symbol}`
+      );
       console.error(
         `Invalid asset, expected symbol: ${expectedSymbol} got: ${symbol}`
       );
-      process.exit(1);
+      // process.exit(1);
     }
     const amount = Number.parseFloat(amountString);
     if (!Number.isFinite(amount)) {
-      // throw new Error(`Invalid asset amount: ${amountString}`);
+      throw new Error(`Invalid asset amount: ${amountString}`);
       console.error(`Invalid asset amount: ${amountString}`);
-      process.exit(1);
+      // process.exit(1);
     }
     return new Asset(amount, symbol as AssetSymbol);
   }
@@ -92,13 +92,13 @@ export class Asset {
   public static from(value: string | Asset | number, symbol?: AssetSymbol) {
     if (value instanceof Asset) {
       if (symbol && value.symbol !== symbol) {
-        // throw new Error(
-        //   `Invalid asset, expected symbol: ${symbol} got: ${value.symbol}`
-        // );
-        console.error(
+        throw new Error(
           `Invalid asset, expected symbol: ${symbol} got: ${value.symbol}`
         );
-        process.exit(1);
+        // console.error(
+        //   `Invalid asset, expected symbol: ${symbol} got: ${value.symbol}`
+        // );
+        // process.exit(1);
       }
       return value;
     } else if (typeof value === "number" && Number.isFinite(value)) {
@@ -106,9 +106,9 @@ export class Asset {
     } else if (typeof value === "string") {
       return Asset.fromString(value, symbol);
     } else {
-      // throw new Error(`Invalid asset '${String(value)}'`);
+      throw new Error(`Invalid asset '${String(value)}'`);
       console.error(`Invalid asset '${String(value)}'`);
-      process.exit(1);
+      // process.exit(1);
     }
   }
 
@@ -293,9 +293,9 @@ export class Price {
         this.base.symbol
       );
     } else {
-      // throw new Error(`Can not convert ${asset} with ${this}`);
+      throw new Error(`Can not convert ${asset} with ${this}`);
       console.error(`Can not convert ${asset} with ${this}`);
-      process.exit(1);
+      // process.exit(1);
     }
   }
 }

@@ -263,13 +263,16 @@ export class PrivateKey {
    * @param message 32-byte message.
    */
   public sign(message: Buffer): Signature {
+    // public sign(message: any): Signature {
+    // for avle, need to pass Uint8List
+    const msgBuf = Buffer.from(message);
     let rv: { signature: Buffer; recovery: number };
     let attempts = 0;
     do {
       const options = {
-        data: sha256(Buffer.concat([message, Buffer.alloc(1, ++attempts)])),
+        data: sha256(Buffer.concat([msgBuf, Buffer.alloc(1, ++attempts)])),
       };
-      rv = secp256k1.sign(message, this.key, options);
+      rv = secp256k1.sign(msgBuf, this.key, options);
     } while (!isCanonicalSignature(rv.signature));
     return new Signature(rv.signature, rv.recovery);
   }
@@ -362,12 +365,12 @@ function transactionDigest(
     Types.Transaction(buffer, transaction);
   } catch (cause) {
     console.error("SerializationError: Unable to serialize transaction");
-    process.exit(1);
+    // process.exit(1);
 
-    // throw new VError(
-    //   { cause, name: "SerializationError" },
-    //   "Unable to serialize transaction"
-    // );
+    throw new VError(
+      { cause, name: "SerializationError" },
+      "Unable to serialize transaction"
+    );
   }
   buffer.flip();
 

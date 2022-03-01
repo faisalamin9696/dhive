@@ -17,9 +17,9 @@ describe("misc", function () {
       for (var i = 0; i < to; i++) {
         yield { i };
         if (errorAt === i) {
-          // throw new Error("Oh noes");
+          throw new Error("Oh noes");
           console.error("[misc|errorCount] Oh noes");
-          process.exit(1);
+          // process.exit(1);
         }
       }
     }
