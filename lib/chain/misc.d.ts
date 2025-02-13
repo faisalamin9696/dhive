@@ -57,12 +57,12 @@ export declare class HexBuffer {
  */
 export interface ChainProperties {
     /**
-     * This fee, paid in HIVE, is converted into VESTING SHARES for the new account. Accounts
+     * This fee, paid in STEEM, is converted into VESTING SHARES for the new account. Accounts
      * without vesting shares cannot earn usage rations and therefore are powerless. This minimum
      * fee requires all accounts to have some kind of commitment to the network that includes the
      * ability to vote and make transactions.
      *
-     * @note This has to be multiplied by STEEMIT ? `CREATE_ACCOUNT_WITH_HIVE_MODIFIER`
+     * @note This has to be multiplied by STEEMIT ? `CREATE_ACCOUNT_WITH_STEEM_MODIFIER`
      *       (defined as 30 on the main chain) to get the minimum fee needed to create an account.
      *
      */
@@ -138,15 +138,15 @@ export interface DynamicGlobalProperties {
      * Total asset held in confidential balances.
      */
     confidential_sbd_supply: Asset | string;
-    total_vesting_fund_hive: Asset | string;
+    total_vesting_fund_steem: Asset | string;
     total_vesting_shares: Asset | string;
-    total_reward_fund_hive: Asset | string;
+    total_reward_fund_steem: Asset | string;
     /**
      * The running total of REWARD^2.
      */
     total_reward_shares2: string;
     pending_rewarded_vesting_shares: Asset | string;
-    pending_rewarded_vesting_hive: Asset | string;
+    pending_rewarded_vesting_steem: Asset | string;
     /**
      * This property defines the interest rate that SBD deposits receive.
      */

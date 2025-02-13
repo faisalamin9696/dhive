@@ -1,7 +1,7 @@
 {
   "name": "@hiveio/dhive",
   "version": "0.14.12",
-  "description": "Hive blockchain RPC client library",
+  "description": "Steem blockchain RPC client library",
   "author": "hive-network",
   "license": "BSD-3-Clause",
   "main": "./lib/index-node",
@@ -29,7 +29,8 @@
     "client",
     "rpc",
     "hive",
-    "dhive"
+    "dhive",
+    "steem"
   ],
   "dependencies": {
     "bs58": "^4.0.1",
