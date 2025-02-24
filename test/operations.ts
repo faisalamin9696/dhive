@@ -158,7 +158,7 @@ describe("operations", function () {
       postingWif
     );
 
-    const post = await client.call("condenser_api", "get_content", [
+    const post = await client.call2("condenser_api", "get_content", [
       username,
       permlink,
     ]);

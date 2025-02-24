@@ -17,8 +17,8 @@ describe("asset", function () {
   });
 
   it("should convert to string", function () {
-    const hive = new Asset(44.999999, "STEEM");
-    assert.equal(hive.toString(), "45.000 STEEM");
+    const steem = new Asset(44.999999, "STEEM");
+    assert.equal(steem.toString(), "45.000 STEEM");
     const vests = new Asset(44.999999, "VESTS");
     assert.equal(vests.toString(), "44.999999 VESTS");
   });

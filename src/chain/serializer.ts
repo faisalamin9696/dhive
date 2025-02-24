@@ -87,14 +87,13 @@ const BooleanSerializer = (buffer: ByteBuffer, data: boolean) => {
   buffer.writeByte(data ? 1 : 0);
 };
 
-const StaticVariantSerializer = (itemSerializers: Serializer[]) => (
-  buffer: ByteBuffer,
-  data: [number, any]
-) => {
-  const [id, item] = data;
-  buffer.writeVarint32(id);
-  itemSerializers[id](buffer, item);
-};
+const StaticVariantSerializer =
+  (itemSerializers: Serializer[]) =>
+  (buffer: ByteBuffer, data: [number, any]) => {
+    const [id, item] = data;
+    buffer.writeVarint32(id);
+    itemSerializers[id](buffer, item);
+  };
 
 /**
  * Serialize asset.
@@ -111,10 +110,17 @@ const AssetSerializer = (buffer: ByteBuffer, data: Asset | string | number) => {
   }
 };
 
-const DateSerializer = (buffer: ByteBuffer, data: string) => {
-  buffer.writeUint32(Math.floor(new Date(data + "Z").getTime() / 1000));
+const DateSerializer = (buffer: ByteBuffer, data: string | number) => {
+  if (typeof data === "number") {
+    const epoch = Math.ceil(data / 1000);
+    buffer.writeInt32(epoch);
+  } else if (typeof data === "string") {
+    buffer.writeUint32(Math.floor(new Date(data + "Z").getTime() / 1000));
+  } else {
+    const epoch = buffer.readInt32(); // fc::time_point_sec
+    return new Date(epoch * 1000);
+  }
 };
-
 const PublicKeySerializer = (
   buffer: ByteBuffer,
   data: PublicKey | string | null
@@ -130,78 +136,70 @@ const PublicKeySerializer = (
   }
 };
 
-const BinarySerializer = (size?: number) => (
-  buffer: ByteBuffer,
-  data: Buffer | HexBuffer
-) => {
-  data = HexBuffer.from(data);
-  const len = data.buffer.length;
-  if (size) {
-    if (len !== size) {
-      throw new Error(
-        `Unable to serialize binary. Expected ${size} bytes, got ${len}`
-      );
-      console.error(
-        `Unable to serialize binary. Expected ${size} bytes, got ${len}`
-      );
-      // process.exit(1);
+const BinarySerializer =
+  (size?: number) => (buffer: ByteBuffer, data: Buffer | HexBuffer) => {
+    data = HexBuffer.from(data);
+    const len = data.buffer.length;
+    if (size) {
+      if (len !== size) {
+        throw new Error(
+          `Unable to serialize binary. Expected ${size} bytes, got ${len}`
+        );
+        console.error(
+          `Unable to serialize binary. Expected ${size} bytes, got ${len}`
+        );
+        // process.exit(1);
+      }
+    } else {
+      buffer.writeVarint32(len);
     }
-  } else {
-    buffer.writeVarint32(len);
-  }
-  buffer.append(data.buffer);
-};
+    buffer.append(data.buffer);
+  };
 
 const VariableBinarySerializer = BinarySerializer();
 
-const FlatMapSerializer = (
-  keySerializer: Serializer,
-  valueSerializer: Serializer
-) => (buffer: ByteBuffer, data: [any, any][]) => {
-  buffer.writeVarint32(data.length);
-  for (const [key, value] of data) {
-    keySerializer(buffer, key);
-    valueSerializer(buffer, value);
-  }
-};
-
-const ArraySerializer = (itemSerializer: Serializer) => (
-  buffer: ByteBuffer,
-  data: any[]
-) => {
-  buffer.writeVarint32(data.length);
-  for (const item of data) {
-    itemSerializer(buffer, item);
-  }
-};
-
-const ObjectSerializer = (keySerializers: [string, Serializer][]) => (
-  buffer: ByteBuffer,
-  data: { [key: string]: any }
-) => {
-  for (const [key, serializer] of keySerializers) {
-    try {
-      serializer(buffer, data[key]);
-    } catch (error) {
-      error.message = `${key}: ${error.message}`;
-      throw error;
-      console.error("ObjectSerializer Error:", error.message);
-      // process.exit(1);
+const FlatMapSerializer =
+  (keySerializer: Serializer, valueSerializer: Serializer) =>
+  (buffer: ByteBuffer, data: [any, any][]) => {
+    buffer.writeVarint32(data.length);
+    for (const [key, value] of data) {
+      keySerializer(buffer, key);
+      valueSerializer(buffer, value);
     }
-  }
-};
+  };
 
-const OptionalSerializer = (valueSerializer: Serializer) => (
-  buffer: ByteBuffer,
-  data: any
-) => {
-  if (data) {
-    buffer.writeByte(1);
-    valueSerializer(buffer, data);
-  } else {
-    buffer.writeByte(0);
-  }
-};
+const ArraySerializer =
+  (itemSerializer: Serializer) => (buffer: ByteBuffer, data: any[]) => {
+    buffer.writeVarint32(data.length);
+    for (const item of data) {
+      itemSerializer(buffer, item);
+    }
+  };
+
+const ObjectSerializer =
+  (keySerializers: [string, Serializer][]) =>
+  (buffer: ByteBuffer, data: { [key: string]: any }) => {
+    for (const [key, serializer] of keySerializers) {
+      try {
+        serializer(buffer, data[key]);
+      } catch (error) {
+        error.message = `${key}: ${error.message}`;
+        throw error;
+        console.error("ObjectSerializer Error:", error.message);
+        // process.exit(1);
+      }
+    }
+  };
+
+const OptionalSerializer =
+  (valueSerializer: Serializer) => (buffer: ByteBuffer, data: any) => {
+    if (data) {
+      buffer.writeByte(1);
+      valueSerializer(buffer, data);
+    } else {
+      buffer.writeByte(0);
+    }
+  };
 
 const AuthoritySerializer = ObjectSerializer([
   ["weight_threshold", UInt32Serializer],
