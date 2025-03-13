@@ -14,13 +14,13 @@ describe("client", function() {
   // TODO: change api.hive.blog to testnet
   it('should handle failover', async () => {
     const bclient = new Client(['https://wrongapi.hive.blog', 'https://hive-test-beeabode.roelandp.nl'], {timeout: 1000})
-    const result = await bclient.call('condenser_api', 'get_accounts', [['initminer']])
+    const result = await bclient.call2('condenser_api', 'get_accounts', [['initminer']])
     assert.equal(result.length, 1);
     assert.equal(result[0].name, "initminer");
   })
 
   it("should make rpc call", async function() {
-    const result = (await client.call("condenser_api", "get_accounts", [
+    const result = (await client.call2("condenser_api", "get_accounts", [
       ["initminer"]
     ])) as any[];
     assert.equal(result.length, 1);
@@ -29,7 +29,7 @@ describe("client", function() {
 
   it("should handle rpc errors", async function() {
     try {
-      await client.call("condenser_api", "i_like_turtles");
+      await client.call2("condenser_api", "i_like_turtles");
       assert(false, "should not be reached");
     } catch (error) {
       assert.equal(error.name, "RPCError");
@@ -49,7 +49,7 @@ describe("client", function() {
   it("should format rpc errors", async function() {
     const tx = { operations: [["witness_update", {}]] };
     try {
-      await client.call("condenser_api", "broadcast_transaction", [tx]);
+      await client.call2("condenser_api", "broadcast_transaction", [tx]);
       assert(false, "should not be reached");
     } catch (error) {
       assert.equal(error.name, "RPCError");

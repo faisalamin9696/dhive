@@ -43,6 +43,7 @@ import { DatabaseAPI } from "./helpers/database";
 import { HivemindAPI } from "./helpers/hivemind";
 import { RCAPI } from "./helpers/rc";
 import { copy, retryingFetch, waitForEvent } from "./utils";
+import { AccountByKeyAPI } from "./helpers/key";
 
 /**
  * Library version.
@@ -177,6 +178,13 @@ export class Client {
    */
   public readonly options: ClientOptions;
 
+
+   /**
+     * Accounts by key API helper.
+     */
+   public readonly keys: AccountByKeyAPI
+
+
   /**
    * Address to Hive RPC server.
    * String or String[] *read-only*
@@ -259,6 +267,8 @@ export class Client {
     this.blockchain = new Blockchain(this);
     this.rc = new RCAPI(this);
     this.hivemind = new HivemindAPI(this);
+    this.keys = new AccountByKeyAPI(this)
+
   }
 
   /**
