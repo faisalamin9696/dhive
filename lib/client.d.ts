@@ -37,6 +37,8 @@ import { Blockchain } from "./helpers/blockchain";
 import { BroadcastAPI } from "./helpers/broadcast";
 import { DatabaseAPI } from "./helpers/database";
 import { HivemindAPI } from "./helpers/hivemind";
+import { AccountByKeyAPI,AccountsByKey } from "./helpers/key";
+
 import { RCAPI } from "./helpers/rc";
 /**
  * Library version.
@@ -100,13 +102,15 @@ export interface ClientOptions {
      * Deprecated - don't use
      */
     rebrandedApi?: boolean;
+
+
 }
 /**
  * RPC Client
  * ----------
  * Can be used in both node.js and the browser. Also see {@link ClientOptions}.
  */
-export declare class Client {
+export class Client {
     /**
      * Client options, *read-only*.
      */
@@ -133,13 +137,20 @@ export declare class Client {
      */
     readonly blockchain: Blockchain;
     /**
-     * Blockchain helper.
+     * Hivemind helper.
      */
     readonly hivemind: HivemindAPI;
     /**
+     * Accounts by key API helper.
+     */
+    readonly keys: AccountByKeyAPI;
+    /**
+     * Transaction status API helper.
+     */
+    /**
      * Chain ID for current network.
      */
-    chainId: Buffer;
+    readonly chainId: Buffer;
     /**
      * Address prefix for current network.
      */
@@ -148,7 +159,7 @@ export declare class Client {
     private backoff;
     private failoverThreshold;
     private consoleOnFailover;
-    private currentAddress;
+    currentAddress: string;
     /**
      * @param address The address to the Hive RPC server,
      * e.g. `https://api.hive.blog`. or [`https://api.hive.blog`, `https://another.api.com`]
@@ -167,6 +178,6 @@ export declare class Client {
      * @param params  Array of parameters to pass to the method, optional.
      *
      */
-    call2(api: string, method: string, params?: any): Promise<any>;
+    call(api: string, method: string, params?: any): Promise<any>;
     updateOperations(rebrandedApi: any): void;
 }
